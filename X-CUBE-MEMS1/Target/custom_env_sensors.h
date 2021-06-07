@@ -34,12 +34,24 @@ extern "C" {
 #define USE_CUSTOM_ENV_SENSOR_HTS221_0          1
 #endif
 
+#ifndef USE_CUSTOM_ENV_SENSOR_LPS22HH_0
+#define USE_CUSTOM_ENV_SENSOR_LPS22HH_0         1
+#endif
+
 #if (USE_CUSTOM_ENV_SENSOR_HTS221_0 == 1)
 #include "hts221.h"
 #endif
 
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+#include "lps22hh.h"
+#endif
+
 #if (USE_CUSTOM_ENV_SENSOR_HTS221_0 == 1)
 #define CUSTOM_HTS221_0 (0)
+#endif
+
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+#define CUSTOM_LPS22HH_0 (USE_CUSTOM_ENV_SENSOR_HTS221_0)
 #endif
 
 /* Environmental Sensor instance Info */
@@ -70,7 +82,7 @@ typedef struct
 #endif
 
 #define CUSTOM_ENV_FUNCTIONS_NBR    3U
-#define CUSTOM_ENV_INSTANCES_NBR    (USE_CUSTOM_ENV_SENSOR_HTS221_0)
+#define CUSTOM_ENV_INSTANCES_NBR    (USE_CUSTOM_ENV_SENSOR_HTS221_0 + USE_CUSTOM_ENV_SENSOR_LPS22HH_0)
 
 #if (CUSTOM_ENV_INSTANCES_NBR == 0)
 #error "No environmental sensor instance has been selected"

@@ -50,7 +50,7 @@
                   <listOptionValue builtIn="false" value="../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32L4xx/Include" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Include" />
-                <listOptionValue builtIn="false" value="../X-CUBE-MEMS1/Target" /><listOptionValue builtIn="false" value="../Drivers/BSP/STEVAL-MKSBOX1V1" /><listOptionValue builtIn="false" value="../Drivers/BSP/Components/hts221" /></option>
+                <listOptionValue builtIn="false" value="../X-CUBE-MEMS1/Target" /><listOptionValue builtIn="false" value="../Drivers/BSP/STEVAL-MKSBOX1V1" /><listOptionValue builtIn="false" value="../Drivers/BSP/Components/hts221" /><listOptionValue builtIn="false" value="../Drivers/BSP/Components/lps22hh" /></option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1539457466" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
                   <listOptionValue builtIn="false" value="USE_HAL_DRIVER" />
                   <listOptionValue builtIn="false" value="STM32L4R9xx" />
@@ -75,7 +75,7 @@
                   <listOptionValue builtIn="false" value="../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32L4xx/Include" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Include" />
-                <listOptionValue builtIn="false" value="../X-CUBE-MEMS1/Target" /><listOptionValue builtIn="false" value="../Drivers/BSP/STEVAL-MKSBOX1V1" /><listOptionValue builtIn="false" value="../Drivers/BSP/Components/hts221" /></option>
+                <listOptionValue builtIn="false" value="../X-CUBE-MEMS1/Target" /><listOptionValue builtIn="false" value="../Drivers/BSP/STEVAL-MKSBOX1V1" /><listOptionValue builtIn="false" value="../Drivers/BSP/Components/hts221" /><listOptionValue builtIn="false" value="../Drivers/BSP/Components/lps22hh" /></option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.276639926" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" useByScannerDiscovery="false" valueType="definedSymbols">
                   <listOptionValue builtIn="false" value="USE_HAL_DRIVER" />
                   <listOptionValue builtIn="false" value="STM32L4R9xx" />
@@ -179,7 +179,7 @@
                   <listOptionValue builtIn="false" value="../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32L4xx/Include" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Include" />
-                <listOptionValue builtIn="false" value="../X-CUBE-MEMS1/Target" /><listOptionValue builtIn="false" value="../Drivers/BSP/STEVAL-MKSBOX1V1" /><listOptionValue builtIn="false" value="../Drivers/BSP/Components/hts221" /></option>
+                <listOptionValue builtIn="false" value="../X-CUBE-MEMS1/Target" /><listOptionValue builtIn="false" value="../Drivers/BSP/STEVAL-MKSBOX1V1" /><listOptionValue builtIn="false" value="../Drivers/BSP/Components/hts221" /><listOptionValue builtIn="false" value="../Drivers/BSP/Components/lps22hh" /></option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1539457466" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
                   <listOptionValue builtIn="false" value="USE_HAL_DRIVER" />
                   <listOptionValue builtIn="false" value="STM32L4R9xx" />
@@ -204,7 +204,7 @@
                   <listOptionValue builtIn="false" value="../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32L4xx/Include" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Include" />
-                <listOptionValue builtIn="false" value="../X-CUBE-MEMS1/Target" /><listOptionValue builtIn="false" value="../Drivers/BSP/STEVAL-MKSBOX1V1" /><listOptionValue builtIn="false" value="../Drivers/BSP/Components/hts221" /></option>
+                <listOptionValue builtIn="false" value="../X-CUBE-MEMS1/Target" /><listOptionValue builtIn="false" value="../Drivers/BSP/STEVAL-MKSBOX1V1" /><listOptionValue builtIn="false" value="../Drivers/BSP/Components/hts221" /><listOptionValue builtIn="false" value="../Drivers/BSP/Components/lps22hh" /></option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.symbols.1662516737" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
                   <listOptionValue builtIn="false" value="USE_HAL_DRIVER" />
                   <listOptionValue builtIn="false" value="STM32L4R9xx" />

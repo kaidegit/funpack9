@@ -66,6 +66,37 @@ int32_t CUSTOM_ENV_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Function, 
       break;
 #endif
 
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if ((Function & ENV_PRESSURE) == ENV_PRESSURE)
+      {
+        if (LPS22HH_PRESS_Get_DRDY_Status(EnvCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else if ((Function & ENV_TEMPERATURE) == ENV_TEMPERATURE)
+      {
+        if (LPS22HH_TEMP_Get_DRDY_Status(EnvCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -90,6 +121,19 @@ int32_t CUSTOM_ENV_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint8_t 
 #if (USE_CUSTOM_ENV_SENSOR_HTS221_0 == 1)
     case CUSTOM_HTS221_0:
       if (HTS221_Read_Reg(EnvCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if (LPS22HH_Read_Reg(EnvCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
       {
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }
@@ -134,6 +178,19 @@ int32_t CUSTOM_ENV_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uint8_t
       break;
 #endif
 
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if (LPS22HH_Write_Reg(EnvCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -158,6 +215,19 @@ int32_t CUSTOM_ENV_SENSOR_FIFO_Get_Data(uint32_t Instance, float *Press, float *
 #if (USE_CUSTOM_ENV_SENSOR_HTS221_0 == 1)
     case CUSTOM_HTS221_0:
       ret = BSP_ERROR_COMPONENT_FAILURE;
+      break;
+#endif
+
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if (LPS22HH_FIFO_Get_Data(EnvCompObj[Instance], Press, Temp) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
       break;
 #endif
 
@@ -187,6 +257,19 @@ int32_t CUSTOM_ENV_SENSOR_FIFO_Get_Fth_Status(uint32_t Instance, uint8_t *Status
       break;
 #endif
 
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if (LPS22HH_FIFO_Get_FTh_Status(EnvCompObj[Instance], Status) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -210,6 +293,19 @@ int32_t CUSTOM_ENV_SENSOR_FIFO_Get_Full_Status(uint32_t Instance, uint8_t *Statu
 #if (USE_CUSTOM_ENV_SENSOR_HTS221_0 == 1)
     case CUSTOM_HTS221_0:
       ret = BSP_ERROR_COMPONENT_FAILURE;
+      break;
+#endif
+
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if (LPS22HH_FIFO_Get_Full_Status(EnvCompObj[Instance], Status) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
       break;
 #endif
 
@@ -239,6 +335,19 @@ int32_t CUSTOM_ENV_SENSOR_FIFO_Get_Num_Samples(uint32_t Instance, uint8_t *NumSa
       break;
 #endif
 
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if (LPS22HH_FIFO_Get_Level(EnvCompObj[Instance], NumSamples) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -262,6 +371,19 @@ int32_t CUSTOM_ENV_SENSOR_FIFO_Get_Ovr_Status(uint32_t Instance, uint8_t *Status
 #if (USE_CUSTOM_ENV_SENSOR_HTS221_0 == 1)
     case CUSTOM_HTS221_0:
       ret = BSP_ERROR_COMPONENT_FAILURE;
+      break;
+#endif
+
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if (LPS22HH_FIFO_Get_Ovr_Status(EnvCompObj[Instance], Status) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
       break;
 #endif
 
@@ -291,6 +413,19 @@ int32_t CUSTOM_ENV_SENSOR_FIFO_Reset_Interrupt(uint32_t Instance, uint8_t Interr
       break;
 #endif
 
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if (LPS22HH_FIFO_Reset_Interrupt(EnvCompObj[Instance], Interrupt) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -314,6 +449,19 @@ int32_t CUSTOM_ENV_SENSOR_FIFO_Set_Interrupt(uint32_t Instance, uint8_t Interrup
 #if (USE_CUSTOM_ENV_SENSOR_HTS221_0 == 1)
     case CUSTOM_HTS221_0:
       ret = BSP_ERROR_COMPONENT_FAILURE;
+      break;
+#endif
+
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if (LPS22HH_FIFO_Set_Interrupt(EnvCompObj[Instance], Interrupt) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
       break;
 #endif
 
@@ -343,6 +491,19 @@ int32_t CUSTOM_ENV_SENSOR_FIFO_Set_Mode(uint32_t Instance, uint8_t Mode)
       break;
 #endif
 
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if (LPS22HH_FIFO_Set_Mode(EnvCompObj[Instance], Mode) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -366,6 +527,19 @@ int32_t CUSTOM_ENV_SENSOR_FIFO_Set_Watermark_Level(uint32_t Instance, uint8_t Wa
 #if (USE_CUSTOM_ENV_SENSOR_HTS221_0 == 1)
     case CUSTOM_HTS221_0:
       ret = BSP_ERROR_COMPONENT_FAILURE;
+      break;
+#endif
+
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if (LPS22HH_FIFO_Set_Watermark_Level(EnvCompObj[Instance], Watermark) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
       break;
 #endif
 
@@ -395,6 +569,19 @@ int32_t CUSTOM_ENV_SENSOR_FIFO_Stop_On_Watermark(uint32_t Instance, uint8_t Stop
       break;
 #endif
 
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if (LPS22HH_FIFO_Stop_On_Watermark(EnvCompObj[Instance], Stop) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -417,6 +604,12 @@ int32_t CUSTOM_ENV_SENSOR_FIFO_Usage(uint32_t Instance, uint8_t Status)
   {
 #if (USE_CUSTOM_ENV_SENSOR_HTS221_0 == 1)
     case CUSTOM_HTS221_0:
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+      break;
+#endif
+
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
       ret = BSP_ERROR_COMPONENT_FAILURE;
       break;
 #endif
@@ -447,6 +640,12 @@ int32_t CUSTOM_ENV_SENSOR_Set_High_Temperature_Threshold(uint32_t Instance, floa
       break;
 #endif
 
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -469,6 +668,12 @@ int32_t CUSTOM_ENV_SENSOR_Set_Low_Temperature_Threshold(uint32_t Instance, float
   {
 #if (USE_CUSTOM_ENV_SENSOR_HTS221_0 == 1)
     case CUSTOM_HTS221_0:
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+      break;
+#endif
+
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
       ret = BSP_ERROR_COMPONENT_FAILURE;
       break;
 #endif
@@ -501,6 +706,12 @@ int32_t CUSTOM_ENV_SENSOR_Get_Temperature_Limit_Status(uint32_t Instance, uint8_
       break;
 #endif
 
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -523,6 +734,12 @@ int32_t CUSTOM_ENV_SENSOR_Set_Event_Pin(uint32_t Instance, uint8_t Enable)
   {
 #if (USE_CUSTOM_ENV_SENSOR_HTS221_0 == 1)
     case CUSTOM_HTS221_0:
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+      break;
+#endif
+
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
       ret = BSP_ERROR_COMPONENT_FAILURE;
       break;
 #endif
@@ -559,6 +776,19 @@ int32_t CUSTOM_ENV_SENSOR_Set_One_Shot(uint32_t Instance)
       break;
 #endif
 
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if (LPS22HH_Set_One_Shot(EnvCompObj[Instance]) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -582,6 +812,19 @@ int32_t CUSTOM_ENV_SENSOR_Get_One_Shot_Status(uint32_t Instance, uint8_t *Status
 #if (USE_CUSTOM_ENV_SENSOR_HTS221_0 == 1)
     case CUSTOM_HTS221_0:
       if (HTS221_Get_One_Shot_Status(EnvCompObj[Instance], Status) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if (LPS22HH_Get_One_Shot_Status(EnvCompObj[Instance], Status) != BSP_ERROR_NONE)
       {
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }

@@ -37,6 +37,7 @@
 
 /* Defines ------------------------------------------------------------------*/
 /* STMicroelectronics.X-CUBE-MEMS1.8.3.0 */
+#define LPS22HH_PRESSTEMP_I2C
 #define BSP_ENV_SENSORS
 #define HTS221_HUMTEMP_I2C
 

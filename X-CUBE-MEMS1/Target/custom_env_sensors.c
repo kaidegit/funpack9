@@ -34,6 +34,10 @@ static CUSTOM_ENV_SENSOR_Ctx_t EnvCtx[CUSTOM_ENV_INSTANCES_NBR];
 static int32_t HTS221_0_Probe(uint32_t Functions);
 #endif
 
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+static int32_t LPS22HH_0_Probe(uint32_t Functions);
+#endif
+
 /**
  * @brief  Initializes the environmental sensor
  * @param  Instance environmental sensor instance to be used
@@ -56,6 +60,30 @@ int32_t CUSTOM_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
 #if (USE_CUSTOM_ENV_SENSOR_HTS221_0 == 1)
     case CUSTOM_HTS221_0:
       if (HTS221_0_Probe(Functions) != BSP_ERROR_NONE)
+      {
+        return BSP_ERROR_NO_INIT;
+      }
+      if (EnvDrv[Instance]->GetCapabilities(EnvCompObj[Instance], (void *)&cap) != BSP_ERROR_NONE)
+      {
+        return BSP_ERROR_UNKNOWN_COMPONENT;
+      }
+      if (cap.Temperature == 1U)
+      {
+        component_functions |= ENV_TEMPERATURE;
+      }
+      if (cap.Humidity == 1U)
+      {
+        component_functions |= ENV_HUMIDITY;
+      }
+      if (cap.Pressure == 1U)
+      {
+        component_functions |= ENV_PRESSURE;
+      }
+      break;
+#endif
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+    case CUSTOM_LPS22HH_0:
+      if (LPS22HH_0_Probe(Functions) != BSP_ERROR_NONE)
       {
         return BSP_ERROR_NO_INIT;
       }
@@ -452,6 +480,92 @@ static int32_t HTS221_0_Probe(uint32_t Functions)
       }
     }
     if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_PRESSURE) == ENV_PRESSURE))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+  }
+
+  return ret;
+}
+#endif
+
+#if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
+/**
+ * @brief  Register Bus IOs for LPS22HH instance
+ * @param  Functions Environmental sensor functions. Could be :
+ *         - ENV_TEMPERATURE and/or ENV_PRESSURE
+ * @retval BSP status
+ */
+static int32_t LPS22HH_0_Probe(uint32_t Functions)
+{
+  LPS22HH_IO_t            io_ctx;
+  uint8_t                 id;
+  int32_t                 ret = BSP_ERROR_NONE;
+  static LPS22HH_Object_t lps22hh_obj_0;
+  LPS22HH_Capabilities_t  cap;
+
+  /* Configure the pressure driver */
+  io_ctx.BusType     = LPS22HH_I2C_BUS; /* I2C */
+  io_ctx.Address     = LPS22HH_I2C_ADD_H; /* SA0 = VDD */
+  io_ctx.Init        = CUSTOM_LPS22HH_0_I2C_Init;
+  io_ctx.DeInit      = CUSTOM_LPS22HH_0_I2C_DeInit;
+  io_ctx.ReadReg     = CUSTOM_LPS22HH_0_I2C_ReadReg;
+  io_ctx.WriteReg    = CUSTOM_LPS22HH_0_I2C_WriteReg;
+  io_ctx.GetTick     = BSP_GetTick;
+
+  if (LPS22HH_RegisterBusIO(&lps22hh_obj_0, &io_ctx) != LPS22HH_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (LPS22HH_ReadID(&lps22hh_obj_0, &id) != LPS22HH_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (id != LPS22HH_ID)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else
+  {
+    (void)LPS22HH_GetCapabilities(&lps22hh_obj_0, &cap);
+
+    EnvCtx[CUSTOM_LPS22HH_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
+                                    uint32_t)cap.Humidity << 2);
+
+    EnvCompObj[CUSTOM_LPS22HH_0] = &lps22hh_obj_0;
+    /* The second cast (void *) is added to bypass Misra R11.3 rule */
+    EnvDrv[CUSTOM_LPS22HH_0] = (ENV_SENSOR_CommonDrv_t *)(void *)&LPS22HH_COMMON_Driver;
+
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_TEMPERATURE) == ENV_TEMPERATURE) && (cap.Temperature == 1U))
+    {
+      /* The second cast (void *) is added to bypass Misra R11.3 rule */
+      EnvFuncDrv[CUSTOM_LPS22HH_0][FunctionIndex[ENV_TEMPERATURE]] = (ENV_SENSOR_FuncDrv_t *)(void *)&LPS22HH_TEMP_Driver;
+
+      if (EnvDrv[CUSTOM_LPS22HH_0]->Init(EnvCompObj[CUSTOM_LPS22HH_0]) != LPS22HH_OK)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_PRESSURE) == ENV_PRESSURE) && (cap.Pressure == 1U))
+    {
+      /* The second cast (void *) is added to bypass Misra R11.3 rule */
+      EnvFuncDrv[CUSTOM_LPS22HH_0][FunctionIndex[ENV_PRESSURE]] = (ENV_SENSOR_FuncDrv_t *)(void *)&LPS22HH_PRESS_Driver;
+
+      if (EnvDrv[CUSTOM_LPS22HH_0]->Init(EnvCompObj[CUSTOM_LPS22HH_0]) != LPS22HH_OK)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_HUMIDITY) == ENV_HUMIDITY))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;

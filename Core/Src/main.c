@@ -113,7 +113,7 @@ int main(void) {
     MX_USB_DEVICE_Init();
     MX_USART1_UART_Init();
     /* USER CODE BEGIN 2 */
-    char ch[30];
+    char ch[100];
     HAL_UART_Transmit(&huart1, "HelloWorld\n", sizeof("HelloWorld\n"), 0xff);
     if (f_mount(&SDFatFS, (TCHAR const *) SDPath, 0) == FR_OK) {
         HAL_UART_Transmit(&huart1, "sd card is ok\n", sizeof("sd card is ok\n"), 0xff);
@@ -131,10 +131,22 @@ int main(void) {
 //    }else{
 //        HAL_UART_Transmit(&huart1, "file opened not successfully\n", sizeof("file opened not successfully\n"), 0xff);
 //    }
-    int i = 0;
+    FRESULT fr = f_open(&SDFile, "data.csv", FA_OPEN_ALWAYS | FA_WRITE);
+    if (fr == FR_OK) {
+        HAL_UART_Transmit(&huart1, "file opened successfully\n", sizeof("file opened successfully\n"), 0xff);
+        UINT num;
+        sprintf(ch, "temperature,humidity,pressure\n");
+        fr = f_write(&SDFile, ch, strlen(ch), &num);
+        fr = f_close(&SDFile);
+    } else {
+        HAL_UART_Transmit(&huart1, "file opened not successfully\n", sizeof("file opened not successfully\n"), 0xff);
+    }
+    fr = f_close(&SDFile);
+
     CUSTOM_ENV_SENSOR_Init(CUSTOM_HTS221_0, ENV_TEMPERATURE);
     CUSTOM_ENV_SENSOR_Init(CUSTOM_HTS221_0, ENV_HUMIDITY);
-//    CUSTOM_ENV_SENSOR_Enable(CUSTOM_HTS221_0, ENV_TEMPERATURE);
+    CUSTOM_ENV_SENSOR_Init(CUSTOM_LPS22HH_0, ENV_PRESSURE);
+
     /* USER CODE END 2 */
 
     /* Infinite loop */
@@ -147,15 +159,22 @@ int main(void) {
 //        sprintf(ch,"%d",i);
 //        fr = f_write(&SDFile, ch, strlen(ch), &num);
 //        HAL_UART_Transmit(&huart1, ch, strlen(ch), 0xff);
-        float temperature;
-        CUSTOM_ENV_SENSOR_GetValue(CUSTOM_HTS221_0, ENV_TEMPERATURE,&temperature);
-        float humidity;
-        CUSTOM_ENV_SENSOR_GetValue(CUSTOM_HTS221_0, ENV_TEMPERATURE, &humidity);
-        sprintf(ch,"temperature:%f humidity:%f\n",temperature,humidity);
-        HAL_UART_Transmit(&huart1, ch, strlen(ch), 0xff);
 //        fr = f_close(&SDFile);
-        i++;
-        HAL_Delay(1000);
+
+        float temperature;
+        CUSTOM_ENV_SENSOR_GetValue(CUSTOM_HTS221_0, ENV_TEMPERATURE, &temperature);
+        float humidity;
+        CUSTOM_ENV_SENSOR_GetValue(CUSTOM_HTS221_0, ENV_HUMIDITY, &humidity);
+        float pressure;
+        CUSTOM_ENV_SENSOR_GetValue(CUSTOM_LPS22HH_0, ENV_PRESSURE, &pressure);
+        sprintf(ch, "%f,%f,%f\n", temperature, humidity, pressure);
+        HAL_UART_Transmit(&huart1, ch, strlen(ch), 0xff);
+
+        UINT num;
+        FRESULT fr = f_open(&SDFile, "data.csv", FA_OPEN_APPEND | FA_WRITE);
+        fr = f_write(&SDFile, ch, strlen(ch), &num);
+        fr = f_close(&SDFile);
+        HAL_Delay(5000);
 
         /* USER CODE END WHILE */
 
