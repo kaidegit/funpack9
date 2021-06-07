@@ -28,12 +28,14 @@
 #include "sdmmc.h"
 #include "spi.h"
 #include "tim.h"
+#include "usart.h"
 #include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stdio.h"
+#include "string.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -110,18 +112,49 @@ int main(void)
   MX_TIM7_Init();
   MX_FATFS_Init();
   MX_USB_DEVICE_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+    char ch[30];
+    HAL_UART_Transmit(&huart1, "HelloWorld\n", sizeof("HelloWorld\n"), 0xff);
+    if (f_mount(&SDFatFS, (TCHAR const *) SDPath, 0) == FR_OK) {
+        HAL_UART_Transmit(&huart1,"sd card is ok\n",sizeof("sd card is ok\n"),0xff);
+    } else {
+        HAL_UART_Transmit(&huart1, "sd card is not ok\n", sizeof("sd card is not ok\n"), 0xff);
+    }
+//    FRESULT fr = f_open(&SDFile,"aaaaa.txt",FA_OPEN_ALWAYS | FA_WRITE);
+//    if (fr == FR_OK){
+//        HAL_UART_Transmit(&huart1, "file opened successfully\n", sizeof("file opened successfully\n"), 0xff);
+//        UINT num;
+//        fr = f_write(&SDFile,"bbbb", sizeof("bbbb"),&num);
+//        sprintf(ch,"witten %d characters\n",num);
+//        HAL_UART_Transmit(&huart1, ch, strlen(ch), 0xff);
+//        fr = f_close(&SDFile);
+//    }else{
+//        HAL_UART_Transmit(&huart1, "file opened not successfully\n", sizeof("file opened not successfully\n"), 0xff);
+//    }
+    int i = 0;
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "EndlessLoop"
+    while (1) {
+        UINT num;
+        FRESULT fr = f_open(&SDFile, "testBat.txt", FA_OPEN_APPEND | FA_WRITE);
+        sprintf(ch,"%d",i);
+        fr = f_write(&SDFile, ch, strlen(ch), &num);
+        HAL_UART_Transmit(&huart1, ch, strlen(ch), 0xff);
+        fr = f_close(&SDFile);
+        i++;
+        HAL_Delay(1000);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+    }
+#pragma clang diagnostic pop
   /* USER CODE END 3 */
 }
 
@@ -177,10 +210,11 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_RTC|RCC_PERIPHCLK_I2C1
-                              |RCC_PERIPHCLK_I2C3|RCC_PERIPHCLK_DFSDM1
-                              |RCC_PERIPHCLK_USB|RCC_PERIPHCLK_SDMMC1
-                              |RCC_PERIPHCLK_ADC;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_RTC|RCC_PERIPHCLK_USART1
+                              |RCC_PERIPHCLK_I2C1|RCC_PERIPHCLK_I2C3
+                              |RCC_PERIPHCLK_DFSDM1|RCC_PERIPHCLK_USB
+                              |RCC_PERIPHCLK_SDMMC1|RCC_PERIPHCLK_ADC;
+  PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK2;
   PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_PCLK1;
   PeriphClkInit.I2c3ClockSelection = RCC_I2C3CLKSOURCE_PCLK1;
   PeriphClkInit.AdcClockSelection = RCC_ADCCLKSOURCE_PLLSAI1;
@@ -212,11 +246,10 @@ void SystemClock_Config(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
+    /* User can add his own implementation to report the HAL error return state */
+    __disable_irq();
+    while (1) {
+    }
   /* USER CODE END Error_Handler_Debug */
 }
 
